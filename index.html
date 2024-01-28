@@ -1,50 +1,115 @@
-<html>
-<head>
-    <title>Index</title>
-</head>
-<body>
-    <h2>Rental market info by Stockholm metro</h2>
-    <iframe src="metro_map.html" width="100%" height="800px"></iframe>
-    <iframe src="rental-market-by-metro.html" width="100%" height="800px"></iframe>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Stockholm Metro Rent Map</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data riot demos</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f6f6f3;
+            color: #342620;
+        }
+
+        header {
+            background-color: #ff84b6;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+        
+        nav {
+            background-color: #ff99c2;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #fff8cc;
+        }
+
+        section {
+            padding: 20px;
+            background-color: #fff8cc;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+        }
+
+        h2, h3 {
+            color: #ff84b6;
+        }
+
+        ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        p {
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
-    <h3>What?</h3>
-    <p>A Stockholm metro map that shows the rent around each stop</p>
-
-    <h3>Why?</h3>
-    <p>Marketing & fun</p>
-
-    <h3>How?</h3>
-    <ol>
-        <li>Find all homes within Stockholms län published within the past year.
-        </li>
-        <li>For each home, find the nearest metro stop.
-        </li>
-        <li>Filter out some samples:
-            <ol>
-                <li>Remove homes that are more than 5 km from the nearest stop</li>
-                <li>Only include secondhand, non-shared homes</li>
-            </ol>
-        </li>
-        <li>Aggregate statistics grouped by nearest metro station:
-            <ol>
-                <li>Number of listings</li>
-                <li>Median rent</li>
-                <li>Median rent/m<sup>2</sup></li>
-            </ol>
-        </li>
-    </ol>
-
+    <header>
+        <h1>Data riot demos</h1>
+        <p>Qasa</p>
+    </header>
     
-    <section>
+    <nav>
+        <a href="#metro-rent-map">Metro Rent Map</a>
+        <a href="#search-area">Search Area Suggester</a>
+    </nav>
+
+    <section id="metro-rent-map">
+        <h2>Stockholm Metro Rent Map</h2>
+        <h3>What?</h3>
+        <p>A Stockholm metro map that shows the rent around each stop</p>
+    
+        <h3>Why?</h3>
+        <p>Marketing & fun</p>
+    
+        <h3>How?</h3>
+        <ol>
+            <li>Find all homes within Stockholms län published within the past year.</li>
+            <li>For each home, find the nearest metro stop.</li>
+            <li>Filter out some samples:
+                <ol>
+                    <li>Remove homes that are more than 5 km from the nearest stop</li>
+                    <li>Only include secondhand, non-shared homes</li>
+                </ol>
+            </li>
+            <li>Aggregate statistics grouped by nearest metro station:
+                <ol>
+                    <li>Number of listings</li>
+                    <li>Median rent</li>
+                    <li>Median rent/m<sup>2</sup></li>
+                </ol>
+            </li>
+        </ol>
+        <iframe src="metro_map.html"></iframe>
+        <iframe src="rental-market-by-metro.html"></iframe>
+    </section>
+
+    <section id="search-area">
         <h2>Search area suggester</h2>
-        <iframe src="search_area_embeddings_visualization.html" width="100%" height="800px"></iframe>
-        <p>This is the content of your new section. You can add any information or elements you need here.</p>
+        <iframe src="search_area_embeddings_visualization.html"></iframe>
     </section>
 </body>
 </html>
