@@ -3,57 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data riot demos</title>
+    <title>Data Riot Demos</title>
     <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ff8c8c;
+            --text-color: #333;
+            --background-color: #f9f9f9;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f6f6f3;
-            color: #342620;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         header {
-            background-color: #ff84b6;
+            background-color: var(--primary-color);
             color: #fff;
             text-align: center;
-            padding: 1em;
+            padding: 1em 0;
         }
-        
+
         nav {
-            background-color: #ff99c2;
-            padding: 10px;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
             text-align: center;
         }
 
         nav a {
             color: #fff;
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 20px;
             font-weight: bold;
             transition: color 0.3s ease-in-out;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 2px solid transparent;
         }
 
         nav a:hover {
-            color: #fff8cc;
+            background-color: #fff;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         section {
-            padding: 20px;
-            background-color: #fff8cc;
+            padding: 30px;
+            background-color: #fff;
             margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         iframe {
             width: 100%;
-            height: 800px;
+            height: 600px;
             border: none;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         h2, h3 {
-            color: #ff84b6;
+            color: var(--primary-color);
         }
 
         ol {
@@ -62,19 +77,54 @@
         }
 
         p {
-            line-height: 1.5;
+            margin-bottom: 1.5em;
+        }
+
+        aside {
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        aside a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        aside a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --primary-color: #66a6ff;
+            --secondary-color: #8fb7ff;
+            --text-color: #fff;
+            --background-color: #1a1a1a;
+        }
+
+        body.dark-mode nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Data riot demos</h1>
         <p>Qasa</p>
+        <button class="mode-toggle" onclick="toggleDarkMode()">"Dark" Mode (WIP)</button>
     </header>
     
     <nav>
         <a href="#metro-rent-map">Metro Rent Map</a>
         <a href="#search-area">Search Area Suggester</a>
+        <a href="#comparison">Finnish home/tenant comparison</a>
     </nav>
 
     <section id="metro-rent-map">
@@ -109,7 +159,153 @@
 
     <section id="search-area">
         <h2>Search area suggester</h2>
-        <iframe src="search_area_embeddings_visualization.html"></iframe>
+        
+        <h3>Search Area Suggester</h3>
+     💡 <a href="https://www.notion.so/Search-area-suggester-b1248a685d4b411aa60c0bb500941500?pvs=4#a5fb257fb74d4a73b98504330f0da806" target="_blank">DEMO VIDEO</a>
+
+        
+        <h4>What is the Search Area Suggester?</h4>
+        <ul>
+            <li>Given a search area, it will provide similar areas.</li>
+        </ul>
+        
+        <h4>Purpose</h4>
+        <ol>
+            <li>Discovery:
+                <ol>
+                    <li>Users may have limited knowledge about various areas, especially if they are new to a city or region.</li>
+                    <li>Some users may have specific preferences but might not know all the areas.</li>
+                    <li>Encourage exploration</li>
+                </ol>
+            </li>
+            <li>Engagement:
+                <ol>
+                    <li>Make the product feel more alive and intelligent.</li>
+                </ol>
+            </li>
+            <li>Possible marketing opportunities?</li>
+        </ol>
+        
+        <h4>How does it work (basic)?</h4>
+        <p>
+            If no search areas are selected yet, the suggester suggests 3 randomly selected, but popular, areas:
+        </p>
+        <pre>
+            input: empty
+            suggestions: Stockholm, Stockholms län, Göteborg
+        </pre>
+        <p>
+            If a user selects or types in an area, e.g., Aspudden, the search suggester responds with areas that are similar to the initial:
+        </p>
+        <pre>
+            input: Aspudden
+            suggestions: Gröndal, Midsommarkransen, Hornstull
+        </pre>
+        <p>
+            If a user has more than one area selected, the model only considers the latest area:
+        </p>
+        <pre>
+            input: Bredäng, Aspudden
+            suggestions: Gröndal, Midsommarkransen, Hornstull
+        </pre>
+        
+        <h4>How does it work (technical)?</h4>
+        
+            <aside>
+                💡 <a href="https://github.com/qasase/search-area-suggestor" target="_blank">Github</a> for the model deployment
+                <a href="https://github.com/qasase/front-end/tree/feat_data_science_riot_project_recommended_search_areas" target="_blank">Github (front-end)</a>
+            </aside>
+            
+            <p>
+                First, we gather search areas that often appear together <a href="https://metabase.qasa.se/question#eyJkYXRhc2V0X3F1ZXJ5Ijp7InR5cGUiOiJuYXRpdmUiLCJuYXRpdmUiOnsicXVlcnkiOiJTRUxFQ1RcbiAgICBhcmVhX2lkZW50aWZpZXJcbkZST00gKFxuICAgIFNFTEVDVFxuICAgICAgICBhcmVhX2lkZW50aWZpZXIsXG4gICAgICAgIGFycmF5X2xlbmd0aChhcmVhX2lkZW50aWZpZXIsIDEpXG4gICAgRlJPTSBzZWFyY2hfcHJlZmVyZW5jZXNcbikgYVxuV0hFUkUgYXJyYXlfbGVuZ3RoID4gMVxuXG51bmlvbiBhbGxcblxuU0VMRUNUXG4gICAgYXJlYV9pZGVudGlmaWVyXG5GUk9NIChcbiAgIFNFTEVDVFxuICAgICAgICBhcmVhX2lkZW50aWZpZXIsXG4gICAgICAgIGFycmF5X2xlbmd0aChhcmVhX2lkZW50aWZpZXIsIDEpXG4gICAgRlJPTSBzZWFyY2hfcHJlZmVyZW5jZXNcbikgYlxuV0hFUkUgYXJyYXlfbGVuZ3RoID4gMSIsInRlbXBsYXRlLXRhZ3MiOnt9fSwiZGF0YWJhc2UiOjJ9LCJkaXNwbGF5Ijoic2NhbGFyIiwicGFyYW1ldGVycyI6W10sInZpc3VhbGl6YXRpb25fc2V0dGluZ3MiOnt9fQ==">[query]</a>:
+            </p>
+            
+            <pre>
+                User A: [se/örebro, se/karlskoga]
+                User B: [se/borlänge, se/gagnefs_kommun]
+                User C: [se/västerbottens_län, se/värmlands_län, se/västernorrlands_län]
+                User D: [se/stockholms_kommun/östermalm, se/stockholms_kommun/vasastaden, se/lidingö]
+                .
+                .
+                .
+                User n: [se/stockholms_län, se/stockholms_kommun/liljeholmen]
+            </pre>
+            
+            <p>
+                Each user's search array could be considered a sentence, and each search area can be considered words that make up that sentence.
+            </p>
+            
+            <p>
+                We then pass the entire corpus of sentences through a model:
+            </p>
+            
+            <p>
+                Word2Vec, a small neural network which learns how similar words are based on where they appear next to each other in a body of text.
+            </p>
+            
+            <p>
+                The model uses these search sequences to learn how search areas are related and to create search areas embeddings, which are numerical vector representations of words. It does this by considering the co-occurrence of search areas within a certain window of context in the search sequence. In other words, it looks at the search areas that tend to appear nearby in search sequences and uses this information to represent search areas in a high-dimensional vector space.
+            </p>
+            
+            <p>
+                Once the model is finished training, each search area is represented numerically. Then you can find words in the model's vocabulary that are most similar to a search area of interest. For example, `se/stockholms_kommun/bandhagen`, is most similar to `se/stockholms_kommun/högdalen`, `se/stockholms_kommun/älvsjö`, and `se/stockholms_kommun/fruängen`
+            </p>
+            
+            <p>
+                Here is a visualization:
+            </p>
+            
+            <p>
+                <iframe src="search_area_embeddings_visualization.html"></iframe>
+            </p>
+            
+            <h4>Input:</h4>
+            <pre>
+                "se/stockholms_kommun/bandhagen"
+            </pre>
+            
+            <h4>Output:</h4>
+            <pre>
+                {
+                  "similar_identifiers": [
+                    {"country": "se", "city": "stockholms_kommun", "name": "högdalen", "score": 0.9936280846595764},
+                    {"country": "se", "city": "stockholms_kommun", "name": "älvsjö", "score": 0.9922400116920471},
+                    {"country": "se", "city": "stockholms_kommun", "name": "fruängen", "score": 0.9910668134689331},
+                    {"country": "se", "city": "stockholms_kommun", "name": "skarpnäcks_stadsdelsområde", "score": 0.9906566739082336},
+                    {"country": "se", "city": "stockholms_kommun", "name": "hägersten-älvsjö_stadsdelsområde", "score": 0.9890558123588562}
+                  ]
+                }
+            </pre>
+    
+            <h4>How can I try it out?</h4>
+            <p>
+                Make a <code>post</code> request to <a href="https://ur1cc46wmd.execute-api.eu-west-1.amazonaws.com/default/dataRiotTest" target="_blank">https://ur1cc46wmd.execute-api.eu-west-1.amazonaws.com/default/dataRiotTest</a>
+            </p>
+    
+            <p>
+                The body of the request should look something like this:
+            </p>
+    
+            <pre>
+                {"area_identifier": "se/valdemarsviks_kommun"}
+            </pre>
+    
+            <p>
+                - **If the API is not in production**
+            </p>
     </section>
+    <section id = "comparison">
+        <h2>Comparison of the Finnish home/tenant market</h2>
+        <p>
+            This analysis is based on all homes and tenants published between feb 2023 and feb 2024. This considers all of Finland. Specific areas still to be done...
+        </p>
+        <iframe src="comparison.html"></iframe>
+    </section>
+    
+    <script>
+        const toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+        };
+    </script>
 </body>
 </html>
